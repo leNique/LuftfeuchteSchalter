@@ -31,7 +31,7 @@ const uint8_t celsius[] = {
 
 void setup() {
   // Clear the display:
-pinMode(PinSchalter, INPUT_PULLUP);
+pinMode(PinSchalter, INPUT);
  display.clear();
  delay(1000);
  display.setBrightness(7);
