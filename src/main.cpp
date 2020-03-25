@@ -148,7 +148,7 @@ if (millis()<TimerBlink)
 if (digitalRead(5) && TasterMerker==0)
    { 
     DisplayStatus++;
-    if (DisplayStatus>6)
+    if (DisplayStatus>7)
      {DisplayStatus=0;}
     TasterMerker=1;
    }
@@ -182,6 +182,9 @@ else
       break;
       case 6:
       DisplayHumidityR(2);
+      break;
+      case 7:
+      DisplayBetrieb();
       break;
   }
   
