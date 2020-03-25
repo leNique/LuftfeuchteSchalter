@@ -1,6 +1,10 @@
 #include <Arduino.h>
 #include <TM1637Display.h>
 
+//Temp_LuftfSenor - AM2320
+#include <AM232X.h>
+AM232X AM2320;
+
 
 #define CLK 11
 #define DIO 12
