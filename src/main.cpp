@@ -17,10 +17,11 @@ TM1637Display display = TM1637Display(CLK, DIO);
 
 
 unsigned long TimerSensor=0;
-
+unsigned long TimerBlink=0;
 
 byte DisplayStatus=0;
 bool TasterMerker=0;
+byte Blink=0;
 
 
 // Create array that turns all segments on:
@@ -35,12 +36,44 @@ const uint8_t done[] = {
   SEG_A | SEG_D | SEG_E | SEG_F | SEG_G            // E
 };
 // Create degree Celsius symbol:
-const uint8_t celsius[] = {
+const uint8_t celsiusInnen[] = {
   SEG_A | SEG_B | SEG_F | SEG_G,  // Circle
-  SEG_A | SEG_D | SEG_E | SEG_F   // C
+  SEG_A | SEG_D | SEG_E | SEG_F,  // C
+  SEG_B | SEG_C,                  // I
+  SEG_C | SEG_E | SEG_G           // n
 };
-
-
+const uint8_t celsiusInnen[] = {
+  SEG_A | SEG_B | SEG_F | SEG_G,  // Circle
+  SEG_A | SEG_D | SEG_E | SEG_F,  // C
+  SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,                  // A
+  SEG_C | SEG_D | SEG_E           // u
+};
+// Create relativ Humidity symbol:
+const uint8_t HumidityRInnen[] = {
+  SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,  // H
+  SEG_E | SEG_G,                          // r
+  SEG_B | SEG_C,                          // I
+  SEG_C | SEG_E | SEG_G                   // n
+};
+const uint8_t HumidityRInnen[] = {
+  SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,         // H
+  SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
+  SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
+  SEG_C | SEG_D | SEG_E                          // u
+};
+// Create absulute Humidity symbol:
+const uint8_t HumidityAInnen[] = {
+  SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,  // H
+  SEG_E | SEG_G,                          // A
+  SEG_B | SEG_C,                          // I
+  SEG_C | SEG_E | SEG_G                   // n
+};
+const uint8_t HumidityAInnen[] = {
+  SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,         // H
+  SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
+  SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
+  SEG_C | SEG_D | SEG_E                          // u
+};
 
 
 void setup() {
@@ -60,7 +93,16 @@ void loop() {
   //Timer nach Überlauf setzen
 if (millis()<TimerSensor)
  {TimerSensor=millis();}
-  
+if (millis()<TimerBlink)
+ {TimerBlink=millis();}  
+ 
+  // Blinker
+    if (TimerBlink+1000<millis())
+  {
+   //Blinker um 1 erhöhen 
+   Blink++;
+   TimerBlink=millis();
+  }  
   
   // 1. Mal pro Minute ausführen
   if (TimerSensor+60000<millis())
