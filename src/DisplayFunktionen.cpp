@@ -86,3 +86,18 @@ else
   showNumberDecEx(AbsuluteFeuchte,0,false,4, uint8_t pos = 3);
  }
 }
+
+
+
+void DisplayBetrieb()
+{
+  if (Blink==0)
+ {
+  display.setSegments(Betrieb);
+ }
+else
+ {
+  Blink=0;
+  showNumberDecEx((Betriebstunden/60/60/1000),0,false,4, uint8_t pos = 3);
+ }
+}
