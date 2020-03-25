@@ -3,6 +3,8 @@
 
 #include <SoftwareWire.h>
 #include <AM2320.h>
+#include "DisplayFunktionen.h"
+
 
 //Temp_LuftfSenor - AM2320
 AM2320 sensorInnen(5,6); // AM2320 sensor attached SDA to digital PIN 5 and SCL to digital PIN 6
