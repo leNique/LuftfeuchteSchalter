@@ -42,7 +42,7 @@ const uint8_t celsiusInnen[] = {
   SEG_B | SEG_C,                  // I
   SEG_C | SEG_E | SEG_G           // n
 };
-const uint8_t celsiusInnen[] = {
+const uint8_t celsiusAussen[] = {
   SEG_A | SEG_B | SEG_F | SEG_G,  // Circle
   SEG_A | SEG_D | SEG_E | SEG_F,  // C
   SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,                  // A
@@ -55,7 +55,7 @@ const uint8_t HumidityRInnen[] = {
   SEG_B | SEG_C,                          // I
   SEG_C | SEG_E | SEG_G                   // n
 };
-const uint8_t HumidityRInnen[] = {
+const uint8_t HumidityRAussen[] = {
   SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,         // H
   SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
   SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
@@ -68,7 +68,7 @@ const uint8_t HumidityAInnen[] = {
   SEG_B | SEG_C,                          // I
   SEG_C | SEG_E | SEG_G                   // n
 };
-const uint8_t HumidityAInnen[] = {
+const uint8_t HumidityAAussen[] = {
   SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,         // H
   SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
   SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
