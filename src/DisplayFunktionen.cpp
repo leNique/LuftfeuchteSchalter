@@ -82,7 +82,7 @@ if (Blink==0)
 else
  {
   Blink=0;
-  AbsuluteFeuchte = 13,233*Humidity*((10^((7,5*Temperatur)/(237+Temperatur)))/(273,16+Temperatur))
+  AbsuluteFeuchte = (13,233*Humidity*((10^((7,5*Temperatur)/(237+Temperatur)))/(273,16+Temperatur)))*100 // die 2 letzten Stellen sind Nachkommastellen
   showNumberDecEx(AbsuluteFeuchte,0,false,4, uint8_t pos = 3);
  }
 }
