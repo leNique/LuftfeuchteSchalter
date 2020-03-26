@@ -174,7 +174,7 @@ if (digitalRead(5) && TasterMerker==0)
      {DisplayStatus=0;}
     TasterMerker=1;
    }
-else
+if (!digitalRead(5))
     {
      TasterMerker=0;
     }
