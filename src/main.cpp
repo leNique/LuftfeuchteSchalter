@@ -104,7 +104,7 @@ SEG_E | SEG_G                                  // r
 
 
 void setup() {
-pinMode(PinSchalter, INPUT);
+pinMode(PinSchalter, INPUT_PULLUP);
 
 
   // Clear the display:
@@ -164,7 +164,7 @@ if (millis()<TimerBlink)
    TimerSensor=millis();
   }
 
-Serial.println(sensorInnen.t*10);
+Serial.println((13,233*sensorInnen.h*((pow(10,((7,5*sensorInnen.t)/(237+sensorInnen.t))))/(273,16+sensorAussen.t)))*100);
 // Taster lesen und DisplayStatus anpassen
 if (digitalRead(5) && TasterMerker==0)
    {
