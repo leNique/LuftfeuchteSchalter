@@ -144,8 +144,8 @@ if (millis()<TimerBlink)
 
    // Absulute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
-    absulutInnen = (13,233*sensorInnen.h*((pow(10,((7,5*sensorInnen.t)/(237+sensorInnen.t))))/(273,16+sensorAussen.t)))*100;
-    absulutAussen = (13,233*sensorAussen.h*((pow(10,((7,5*sensorAussen.t)/(237+sensorAussen.t))))/(273,16+sensorInnen.t)))*100;
+    absulutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t)))*100;
+    absulutAussen = (13.233*sensorAussen.h*((pow(10,((7.5*sensorAussen.t)/(237+sensorAussen.t))))/(273.16+sensorInnen.t)))*100;
 
     if (absulutInnen-50>absulutAussen && IstEin==0)
      { //Einschalten
@@ -306,7 +306,7 @@ if (Blink==0)
 else
  {
   Blink=0;
-  AbsuluteFeuchte = (13,233*Humidity*((pow(10,((7,5*Temperatur)/(237+Temperatur))))/(273,16+Temperatur)))*100; // die 2 letzten Stellen sind Nachkommastellen
+  AbsuluteFeuchte = (13.233*Humidity*((pow(10,((7.5*Temperatur)/(237+Temperatur))))/(273.16+Temperatur)))*100; // die 2 letzten Stellen sind Nachkommastellen
   display.showNumberDecEx(AbsuluteFeuchte,0,false,4,3);
  }
 }
