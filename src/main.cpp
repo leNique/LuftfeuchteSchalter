@@ -164,7 +164,7 @@ if (millis()<TimerBlink)
    TimerSensor=millis();
   }
 
-Serial.println((13,233*sensorInnen.h*((pow(10,((7,5*sensorInnen.t)/(237+sensorInnen.t))))/(273,16+sensorAussen.t)))*100);
+Serial.println((13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t))));
 // Taster lesen und DisplayStatus anpassen
 if (digitalRead(5) && TasterMerker==0)
    {
@@ -235,17 +235,17 @@ void DisplayTemp(byte Auswahl)
   Temperatur=sensorAussen.t*10; // die letzte Stelle ist die Nachkommastelle
   break;
  }
-if (Blink==0)
+if (Blink==1)
  {
   if (Auswahl==1)
   {display.setSegments(celsiusInnen);}
   else
   {display.setSegments(celsiusAussen);}
  }
-else
+if (Blink>1)
  {
   Blink=0;
-  display.showNumberDecEx(Temperatur,0,false,4,3);
+  display.showNumberDecEx(Temperatur,0,false,4,0);
  }
 
 }
@@ -264,17 +264,17 @@ void DisplayHumidityR(byte Auswahl)
   Humidity=sensorAussen.h;
   break;
  }
-if (Blink==0)
+if (Blink==1)
  {
   if (Auswahl==1)
   {display.setSegments(HumidityRInnen);}
   else
   {display.setSegments(HumidityRAussen);}
  }
-else
+if (Blink>1)
  {
   Blink=0;
-  display.showNumberDecEx(Humidity,0,false,4, 3);
+  display.showNumberDecEx(Humidity,0,false,4, 0);
  }
 }
 
@@ -296,18 +296,18 @@ void DisplayHumidityA(byte Auswahl)
   Temperatur=sensorAussen.t;
   break;
  }
-if (Blink==0)
+if (Blink==1)
  {
   if (Auswahl==1)
   {display.setSegments(HumidityRInnen);}
   else
   {display.setSegments(HumidityRAussen);}
  }
-else
+if (Blink>1)
  {
   Blink=0;
   AbsuluteFeuchte = (13.233*Humidity*((pow(10,((7.5*Temperatur)/(237+Temperatur))))/(273.16+Temperatur)))*100; // die 2 letzten Stellen sind Nachkommastellen
-  display.showNumberDecEx(AbsuluteFeuchte,0,false,4,3);
+  display.showNumberDecEx(AbsuluteFeuchte,0,false,4,0);
  }
 }
 
@@ -315,13 +315,13 @@ else
 
 void DisplayBetrieb()
 {
-  if (Blink==0)
+  if (Blink==1)
  {
   display.setSegments(Betrieb);
  }
-else
+if (Blink>1)
  {
   Blink=0;
-  display.showNumberDecEx((Betriebstunden/60/60/1000),0,false,4,3);
+  display.showNumberDecEx((Betriebstunden/60/60/1000),0,false,4,0);
  }
 }
