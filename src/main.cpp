@@ -37,7 +37,7 @@ int absulutInnen=0;
 int absulutAussen=0;
 
 
-void DisplayTemp(byte);
+      void DisplayTemp(byte);
       void DisplayHumidityR(byte);
       void DisplayHumidityA(byte);
       void DisplayBetrieb(void);
@@ -64,10 +64,10 @@ SEG_B | SEG_C,                  // I
 SEG_C | SEG_E | SEG_G           // n
 };
 const uint8_t celsiusAussen[] = {
-SEG_A | SEG_B | SEG_F | SEG_G,  // Circle
-SEG_A | SEG_D | SEG_E | SEG_F,  // C
-SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,                  // A
-SEG_C | SEG_D | SEG_E           // u
+SEG_A | SEG_B | SEG_F | SEG_G,                  // Circle
+SEG_A | SEG_D | SEG_E | SEG_F,                  // C
+SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,  // A
+SEG_C | SEG_D | SEG_E                           // u
 };
 // Create relativ Humidity symbol:
 const uint8_t HumidityRInnen[] = {
@@ -78,16 +78,16 @@ SEG_C | SEG_E | SEG_G                   // n
 };
 const uint8_t HumidityRAussen[] = {
 SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,         // H
-SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
+SEG_E | SEG_G,                                 // r
 SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
 SEG_C | SEG_D | SEG_E                          // u
 };
 // Create absulute Humidity symbol:
 const uint8_t HumidityAInnen[] = {
-SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,  // H
-SEG_E | SEG_G,                          // A
-SEG_B | SEG_C,                          // I
-SEG_C | SEG_E | SEG_G                   // n
+SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,         // H
+SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
+SEG_B | SEG_C,                                 // I
+SEG_C | SEG_E | SEG_G                          // n
 };
 const uint8_t HumidityAAussen[] = {
 SEG_B | SEG_C | SEG_E | SEG_F | SEG_G,         // H
@@ -106,10 +106,10 @@ SEG_E | SEG_G                                  // r
 
 
 void setup() {
-pinMode(PinSchalter, INPUT_PULLUP);
+pinMode(PinSchalter, INPUT);
 pinMode(PinRelay, OUTPUT);
-digitalWrite(PinRelay, LOW);
-      
+digitalWrite(PinRelay, HIGH);
+
   // Clear the display:
  display.clear();
  delay(500);
@@ -144,7 +144,7 @@ if (millis()<TimerBlink)
    //SensorenLesen
    sensorInnen.Read();
    sensorAussen.Read();
-
+Serial.write("Minute");
    // Absulute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
     absulutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t)))*100;
@@ -152,13 +152,15 @@ if (millis()<TimerBlink)
 
     if (absulutInnen-EinSchaltSchwelle>absulutAussen && IstEin==0)
      { //Einschalten
-      digitalWrite(PinRelay, HIGH);
+      digitalWrite(PinRelay, LOW);
+      Serial.write("High");
       BetriebstundenEinMerker=millis();
       IstEin=1;
      }
     if (absulutInnen-AusSchaltSchwelle<absulutAussen && IstEin==1)
      { //Ausschalten
-      digitalWrite(PinRelay, LOW);
+      digitalWrite(PinRelay, HIGH);
+      Serial.write("low");
       if (millis()>BetriebstundenEinMerker) // Wenn millis() überläuft wird diese Betriebszeit einfach ignoriert
        {Betriebstunden=Betriebstunden+(millis()-BetriebstundenEinMerker);}
       IstEin=0;
@@ -167,12 +169,11 @@ if (millis()<TimerBlink)
    TimerSensor=millis();
   }
 
-Serial.println((13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t))));
+
 // Taster lesen und DisplayStatus anpassen
 if (digitalRead(5) && TasterMerker==0)
    {
     DisplayStatus++;
-    Serial.println("Hello Serial 1");
     if (DisplayStatus>7)
      {DisplayStatus=0;}
     TasterMerker=1;
@@ -191,31 +192,24 @@ if (!digitalRead(5))
               display.clear();
       break;
       case 1:
-              Blink=1;
               DisplayTemp(1);
       break;
       case 2:
-              Blink=1;
               DisplayHumidityR(1);
       break;
       case 3:
-              Blink=1;
               DisplayHumidityA(1);
       break;
       case 4:
-              Blink=1;
               DisplayTemp(2);
       break;
       case 5:
-              Blink=1;
               DisplayHumidityR(2);
       break;
       case 6:
-              Blink=1;
-              DisplayHumidityR(2);
+              DisplayHumidityA(2);
       break;
       case 7:
-              Blink=1;
               DisplayBetrieb();
       break;
   }
@@ -309,9 +303,9 @@ void DisplayHumidityA(byte Auswahl)
 if (Blink==1)
  {
   if (Auswahl==1)
-  {display.setSegments(HumidityRInnen);}
+  {display.setSegments(HumidityAInnen);}
   else
-  {display.setSegments(HumidityRAussen);}
+  {display.setSegments(HumidityAAussen);}
  }
 if (Blink>1)
  {
