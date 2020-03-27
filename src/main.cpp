@@ -14,9 +14,11 @@ AM2320 sensorAussen(9,10); // AM2320 sensor attached SDA to digital PIN 9 and SC
 #define CLK 11
 #define DIO 12
 #define PinSchalter 5
-
+#define PinRelay 3
 TM1637Display display = TM1637Display(CLK, DIO);
 
+#define EinSchaltSchwelle 70
+#define AusSchaltSchwelle 30
 
 unsigned long TimerSensor=0;
 unsigned long TimerBlink=0;
@@ -105,8 +107,9 @@ SEG_E | SEG_G                                  // r
 
 void setup() {
 pinMode(PinSchalter, INPUT_PULLUP);
-
-
+pinMode(PinRelay, OUTPUT);
+digitalWrite(PinRelay, LOW);
+      
   // Clear the display:
  display.clear();
  delay(500);
@@ -147,15 +150,15 @@ if (millis()<TimerBlink)
     absulutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t)))*100;
     absulutAussen = (13.233*sensorAussen.h*((pow(10,((7.5*sensorAussen.t)/(237+sensorAussen.t))))/(273.16+sensorInnen.t)))*100;
 
-    if (absulutInnen-50>absulutAussen && IstEin==0)
+    if (absulutInnen-EinSchaltSchwelle>absulutAussen && IstEin==0)
      { //Einschalten
-
+      digitalWrite(PinRelay, HIGH);
       BetriebstundenEinMerker=millis();
       IstEin=1;
      }
-    if (absulutInnen-10<absulutAussen && IstEin==1)
+    if (absulutInnen-AusSchaltSchwelle<absulutAussen && IstEin==1)
      { //Ausschalten
-
+      digitalWrite(PinRelay, LOW);
       if (millis()>BetriebstundenEinMerker) // Wenn millis() überläuft wird diese Betriebszeit einfach ignoriert
        {Betriebstunden=Betriebstunden+(millis()-BetriebstundenEinMerker);}
       IstEin=0;
