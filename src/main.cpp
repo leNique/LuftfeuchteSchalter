@@ -188,28 +188,35 @@ if (!digitalRead(5))
 
   switch (DisplayStatus) {
       case 0:
-             display.clear();
+              display.clear();
       break;
       case 1:
-      DisplayTemp(1);
+              Blink=1;
+              DisplayTemp(1);
       break;
       case 2:
-      DisplayHumidityR(1);
+              Blink=1;
+              DisplayHumidityR(1);
       break;
       case 3:
-      DisplayHumidityA(1);
+              Blink=1;
+              DisplayHumidityA(1);
       break;
       case 4:
-      DisplayTemp(2);
+              Blink=1;
+              DisplayTemp(2);
       break;
       case 5:
-      DisplayHumidityR(2);
+              Blink=1;
+              DisplayHumidityR(2);
       break;
       case 6:
-      DisplayHumidityR(2);
+              Blink=1;
+              DisplayHumidityR(2);
       break;
       case 7:
-      DisplayBetrieb();
+              Blink=1;
+              DisplayBetrieb();
       break;
   }
 
