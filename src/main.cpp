@@ -100,7 +100,12 @@ SEG_A | SEG_D | SEG_E | SEG_F | SEG_G,         // E
 SEG_D | SEG_E | SEG_F | SEG_G,                 // t
 SEG_E | SEG_G                                  // r
 };
-
+const uint8_t EinAus[] = {
+SEG_A | SEG_D | SEG_E | SEG_F | SEG_G,         // E
+SEG_B | SEG_C,                                 // I
+SEG_C | SEG_E | SEG_G                          // n
+SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G, // A
+};
 
 
 
@@ -327,7 +332,10 @@ void DisplayBetrieb(byte Auswahl)
 {
   if (Blink==1)
  {
-  display.setSegments(Betrieb);
+  if (Auswahl==1)
+  {display.setSegments(Betrieb);}
+  if (Auswahl==2) 
+  {display.setSegments(EinAus);}      
  }
 if (Blink>1)
  {
