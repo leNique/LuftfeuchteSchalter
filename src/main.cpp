@@ -23,9 +23,8 @@ TM1637Display display = TM1637Display(CLK, DIO);
 unsigned long TimerSensor=0;
 unsigned long TimerBlink=0;
 
-unsigned long Betriebstunden=0;
-unsigned long BetriebstundenEinMerker=0;
-
+int BetriebstundenMin=0;
+int EinAusZaehler=0;
 
 byte DisplayStatus=0;
 bool TasterMerker=0;
@@ -40,7 +39,7 @@ int absulutAussen=0;
       void DisplayTemp(byte);
       void DisplayHumidityR(byte);
       void DisplayHumidityA(byte);
-      void DisplayBetrieb(void);
+      void DisplayBetrieb(byte);
 
 
 
@@ -150,20 +149,24 @@ Serial.write("Minute");
     absulutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t)))*100;
     absulutAussen = (13.233*sensorAussen.h*((pow(10,((7.5*sensorAussen.t)/(237+sensorAussen.t))))/(273.16+sensorInnen.t)))*100;
 
+    if (IstEin==1)    
+     {BetriebstundenMin++;}
+    if (BetriebstundenMin*60>=9999)
+     {BetriebstundenMin=0;}
+    if (EinAusZaehler>=9999)
+    {EinAusZaehler=0;}     
+        
     if (absulutInnen-EinSchaltSchwelle>absulutAussen && IstEin==0)
      { //Einschalten
       digitalWrite(PinRelay, LOW);
-      Serial.write("High");
-      BetriebstundenEinMerker=millis();
       IstEin=1;
+      EinAusZaehler++;    
      }
     if (absulutInnen-AusSchaltSchwelle<absulutAussen && IstEin==1)
      { //Ausschalten
       digitalWrite(PinRelay, HIGH);
-      Serial.write("low");
-      if (millis()>BetriebstundenEinMerker) // Wenn millis() überläuft wird diese Betriebszeit einfach ignoriert
-       {Betriebstunden=Betriebstunden+(millis()-BetriebstundenEinMerker);}
       IstEin=0;
+      EinAusZaehler++;    
      }
 
    TimerSensor=millis();
@@ -174,7 +177,7 @@ Serial.write("Minute");
 if (digitalRead(5) && TasterMerker==0)
    {
     DisplayStatus++;
-    if (DisplayStatus>7)
+    if (DisplayStatus>8)
      {DisplayStatus=0;}
     TasterMerker=1;
    }
@@ -210,7 +213,10 @@ if (!digitalRead(5))
               DisplayHumidityA(2);
       break;
       case 7:
-              DisplayBetrieb();
+              DisplayBetrieb(1);
+      break;
+      case 8:
+              DisplayBetrieb(2);
       break;
   }
 
@@ -317,7 +323,7 @@ if (Blink>1)
 
 
 
-void DisplayBetrieb()
+void DisplayBetrieb(byte Auswahl)
 {
   if (Blink==1)
  {
@@ -326,6 +332,9 @@ void DisplayBetrieb()
 if (Blink>1)
  {
   Blink=0;
-  display.showNumberDecEx((Betriebstunden/60/60/1000),0,false,4,0);
+  if (Auswahl==1)
+   {display.showNumberDecEx((BetriebstundenMin/60),0,false,4,0);}
+  if (Auswahl==2)
+   {display.showNumberDecEx(EinAusZaehler,0,false,4,0);}
  }
 }
