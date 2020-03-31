@@ -148,7 +148,7 @@ if (millis()<TimerBlink)
    //SensorenLesen
    sensorInnen.Read();
    sensorAussen.Read();
-Serial.write("Minute");
+
    // Absulute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
     absulutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t)))*100;
@@ -156,7 +156,7 @@ Serial.write("Minute");
 
     if (IstEin==1)    
      {BetriebstundenMin++;}
-    if (BetriebstundenMin*60>=9999)
+    if (BetriebstundenMin/60>=9999)
      {BetriebstundenMin=0;}
     if (EinAusZaehler>=9999)
     {EinAusZaehler=0;}     
