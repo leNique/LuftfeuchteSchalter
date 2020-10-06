@@ -22,6 +22,7 @@ TM1637Display display = TM1637Display(CLK, DIO);
 
 unsigned long TimerSensor=0;
 unsigned long TimerBlink=0;
+unsigned long TimerDisplayReset=0;
 
 int BetriebstundenMin=0;
 int EinAusZaehler=0;
@@ -133,6 +134,8 @@ void loop() {
   {TimerSensor=millis();}
   if (millis()<TimerBlink)
   {TimerBlink=millis();}
+  if (millis()<TimerDisplayReset)
+  {TimerDisplayReset=millis();}
 
   // Blinker
   if (TimerBlink+1000<millis())
@@ -184,6 +187,7 @@ void loop() {
     if (DisplayStatus>8)
     {DisplayStatus=0;}
     TasterMerker=1;
+    TimerDisplayReset=millis();
   }
   if (!digitalRead(5))
   {
@@ -191,6 +195,14 @@ void loop() {
   }
 
 
+  // DisplayStatus - Reset nach 30 Sekunden inaktivität
+  if (TimerDisplayReset+30000<millis())
+  {
+    DisplayStatus=0;
+  }
+  
+  
+  
 
   // ----- Display ------
 
