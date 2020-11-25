@@ -16,7 +16,8 @@ sudo ln -s /usr/local/share/arduino-cli /usr/local/bin/arduino-cli
 ##  additional_urls:
 ##    - https://dl.espressif.com/dl/package_esp32_index.json" >> .cli-config.yml
 printf "directories:
-data:  $PWD/lib" >> .cli-config.yml
+data:  
+- $PWD/lib" >> .cli-config.yml
 sudo mv .cli-config.yml /usr/local/share/
 
 arduino-cli core update-index
