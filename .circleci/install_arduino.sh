@@ -12,13 +12,14 @@ tar xvf arduino-cli-linux64.tar
 sudo mv arduino-cli-0.3.3-alpha.preview-linux64 /usr/local/share/arduino-cli
 sudo ln -s /usr/local/share/arduino-cli /usr/local/bin/arduino-cli
 
-printf "board_manager:
-  additional_urls:
-    - https://dl.espressif.com/dl/package_esp32_index.json" >> .cli-config.yml
+##printf "board_manager:
+##  additional_urls:
+##    - https://dl.espressif.com/dl/package_esp32_index.json" >> .cli-config.yml
 sudo mv .cli-config.yml /usr/local/share/
 
 arduino-cli core update-index
-arduino-cli core install esp32:esp32
+##arduino-cli core install esp32:esp32
+arduino-cli core install arduino:avr
 arduino-cli lib install "TM1637" "AM232X"
 
 
