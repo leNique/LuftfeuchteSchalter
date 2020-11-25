@@ -19,3 +19,4 @@ sudo mv .cli-config.yml /usr/local/share/
 
 arduino-cli core update-index
 arduino-cli core install esp32:esp32
+arduino-cli lib install "TM1637" "AM232X"
