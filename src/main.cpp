@@ -163,13 +163,13 @@ void loop() {
     if (EinAusZaehler>=9999)
     {EinAusZaehler=0;}
 
-    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0)
+    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.h > 35 && sensorInnen.t > 9)
     { //Einschalten
       digitalWrite(PinRelay, LOW);
       IstEin=1;
       EinAusZaehler++;
     }
-    if (absolutInnen-AusSchaltSchwelle<absolutAussen && IstEin==1)
+    if ((absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.h <= 30 || sensorInnen.t <= 7) && IstEin==1)
     { //Ausschalten
       digitalWrite(PinRelay, HIGH);
       IstEin=0;
