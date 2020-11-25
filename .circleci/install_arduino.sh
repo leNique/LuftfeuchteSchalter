@@ -15,8 +15,8 @@ sudo ln -s /usr/local/share/arduino-cli /usr/local/bin/arduino-cli
 ##printf "board_manager:
 ##  additional_urls:
 ##    - https://dl.espressif.com/dl/package_esp32_index.json" >> .cli-config.yml
-printf "libraries:
-- ./lib/AM2320" >> .cli-config.yml
+printf "directories:
+data: ./lib" >> .cli-config.yml
 sudo mv .cli-config.yml /usr/local/share/
 
 arduino-cli core update-index
