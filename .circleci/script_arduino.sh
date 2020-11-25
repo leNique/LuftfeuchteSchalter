@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-arduino-cli compile --output temp.bin -b arduino:avr:uno $PWD/src/main.cpp --debug --directories.data $PWD/lib
+arduino-cli compile --directories.data $PWD/lib --output temp.bin -b arduino:avr:uno $PWD/src/main.cpp --debug
 
 
 
