@@ -6,4 +6,7 @@ arduino-cli compile --output temp.bin -b arduino:avr:uno $PWD/src/main.cpp --deb
 
 
 
+arduino-cli config dump
+
+
 ##arduino --verify --board arduino:avr:uno $PWD/src/main.cpp
