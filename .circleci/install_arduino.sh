@@ -15,9 +15,6 @@ sudo ln -s /usr/local/share/arduino-cli /usr/local/bin/arduino-cli
 ##printf "board_manager:
 ##  additional_urls:
 ##    - https://dl.espressif.com/dl/package_esp32_index.json" >> .cli-config.yml
-printf "directories:
-data:  
-- ./lib" >> .cli-config.yml
 sudo mv .cli-config.yml /usr/local/share/
 
 arduino-cli core update-index
@@ -25,16 +22,3 @@ arduino-cli core update-index
 ##arduino-cli core install esp32:esp32
 arduino-cli core install arduino:avr
 arduino-cli lib install "SoftwareWire" "TM1637" "AM232X"
-
-
-
-
-
-
-##wget http://downloads.arduino.cc/arduino-1.8.8-linux64.tar.xz
-##tar xf arduino-1.8.8-linux64.tar.xz
-##sudo mv arduino-1.8.8 /usr/local/share/arduino
-##sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
-
-
-##arduino lib install "TM1637" "AM232X"
