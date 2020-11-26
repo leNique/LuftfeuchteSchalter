@@ -20,7 +20,7 @@ TM1637Display display = TM1637Display(CLK, DIO);
 #define EinSchaltSchwelle 70
 #define AusSchaltSchwelle 30
 
-unsigned long TimerSensor=0;
+unsigned long TimerSensor=0
 unsigned long TimerBlink=0;
 unsigned long TimerDisplayReset=0;
 
