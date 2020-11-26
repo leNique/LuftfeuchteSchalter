@@ -7,6 +7,6 @@ arduino-cli compile --output temp.bin -b arduino:avr:uno $PWD/src/main.cpp --deb
 
 
 arduino-cli config dump
-
+dir $PWD/src/libraries
 
 ##arduino --verify --board arduino:avr:uno $PWD/src/main.cpp
