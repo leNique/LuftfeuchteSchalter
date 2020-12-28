@@ -122,8 +122,8 @@ void setup() {
   display.setSegments(data);
   delay(1000);
 
-  sensorInnen.Read();
-  sensorAussen.Read();
+  sensorInnen.get();
+  sensorAussen.get();
   Serial.begin(9600);
 }
 
@@ -149,8 +149,8 @@ void loop() {
   if (TimerSensor<millis())
   {
     //SensorenLesen
-    sensorInnen.Read();
-    sensorAussen.Read();
+    sensorInnen.get();
+    sensorAussen.get();
     // absolute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
     absolutInnen = (13.233*sensorInnen.humidity()*((pow(10,((7.5*sensorInnen.temperature())/(237+sensorInnen.temperature()))))/(273.16+sensorAussen.temperature())))*100;
