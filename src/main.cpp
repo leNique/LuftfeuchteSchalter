@@ -2,7 +2,7 @@
 #include <TM1637Display.h>
 
 #include <SoftwareWire.h>
-#include  "AM2320.h"
+#include "AM2320.h"
 
 
 
@@ -122,8 +122,8 @@ void setup() {
   display.setSegments(data);
   delay(1000);
 
-  sensorInnen.get();
-  sensorAussen.get();
+  sensorInnen.Read();
+  sensorAussen.Read();
   Serial.begin(9600);
 }
 
@@ -149,12 +149,12 @@ void loop() {
   if (TimerSensor<millis())
   {
     //SensorenLesen
-    sensorInnen.get();
-    sensorAussen.get();
+    sensorInnen.Read();
+    sensorAussen.Read();
     // absolute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
-    absolutInnen = (13.233*sensorInnen.humidity()*((pow(10,((7.5*sensorInnen.temperature())/(237+sensorInnen.temperature()))))/(273.16+sensorAussen.temperature())))*100;
-    absolutAussen = (13.233*sensorAussen.humidity()*((pow(10,((7.5*sensorAussen.temperature())/(237+sensorAussen.temperature()))))/(273.16+sensorInnen.temperature())))*100;
+    absolutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t)))*100;
+    absolutAussen = (13.233*sensorAussen.h*((pow(10,((7.5*sensorAussen.t)/(237+sensorAussen.t))))/(273.16+sensorInnen.t)))*100;
 
     if (IstEin==1)
     {BetriebstundenMin++;}
@@ -164,7 +164,7 @@ void loop() {
     {EinAusZaehler=0;}
 
     
-    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.humidity() > 35.0 && sensorInnen.temperature() > 12.0)
+    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
     { //Einschalten
       digitalWrite(PinRelay, LOW);
       IstEin=1;
@@ -173,7 +173,7 @@ void loop() {
     
     if (IstEin==1)
      {
-      if (absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.humidity() <= 30.0 || sensorInnen.temperature() <= 10.0)
+      if (absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.h <= 30.0 || sensorInnen.t <= 10.0)
       { //Ausschalten
         digitalWrite(PinRelay, HIGH);
         IstEin=0;
