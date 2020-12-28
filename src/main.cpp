@@ -146,7 +146,7 @@ void loop() {
   }
 
   // 1. Mal pro Minute ausführen
-  if (TimerSensor+60000<millis())
+  if (TimerSensor<millis())
   {
     //SensorenLesen
     sensorInnen.Read();
@@ -160,23 +160,27 @@ void loop() {
     {BetriebstundenMin++;}
     if (BetriebstundenMin/60>=9999)
     {BetriebstundenMin=0;}
-    if (EinAusZaehler>=9999)
+    if (EinAusZaehler>=999)
     {EinAusZaehler=0;}
 
-    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 9.0)
+    
+    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
     { //Einschalten
       digitalWrite(PinRelay, LOW);
       IstEin=1;
       EinAusZaehler++;
     }
-    if ((absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.h <= 30.0 || sensorInnen.t <= 7.0) && IstEin==1)
-    { //Ausschalten
-      digitalWrite(PinRelay, HIGH);
-      IstEin=0;
-      EinAusZaehler++;
-    }
     
-    TimerSensor=millis();
+    if (IstEin==1)
+     {
+      if (absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.h <= 30.0 || sensorInnen.t <= 10.0)
+      { //Ausschalten
+        digitalWrite(PinRelay, HIGH);
+        IstEin=0;
+        EinAusZaehler++;
+      }
+     }
+    TimerSensor=millis()+60000;
   }
 
 
@@ -346,7 +350,12 @@ void DisplayBetrieb(byte Auswahl)
     if (Auswahl==1)
     {display.setSegments(Betrieb);}
     if (Auswahl==2)
-    {display.setSegments(EinAus);}
+    {
+      if (IstEin==0)
+      {display.setSegments(EinAus);}
+      if (IstEin==1)
+      {display.setSegments(EinAus+1000);}
+    }
   }
   if (Blink>1)
   {
