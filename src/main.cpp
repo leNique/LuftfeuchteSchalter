@@ -350,12 +350,7 @@ void DisplayBetrieb(byte Auswahl)
     if (Auswahl==1)
     {display.setSegments(Betrieb);}
     if (Auswahl==2)
-    {
-      if (IstEin==0)
-      {display.setSegments(EinAus);}
-      if (IstEin==1)
-      {display.setSegments(EinAus+1000);}
-    }
+    {display.setSegments(EinAus);}
   }
   if (Blink>1)
   {
@@ -363,6 +358,11 @@ void DisplayBetrieb(byte Auswahl)
     if (Auswahl==1)
     {display.showNumberDecEx((BetriebstundenMin/60),0,false,4,0);}
     if (Auswahl==2)
-    {display.showNumberDecEx(EinAusZaehler,0,false,4,0);}
+    {
+      if (IstEin==0)
+      {display.showNumberDecEx(EinAusZaehler,0,false,4,0);}
+      if (IstEin==1)
+      {display.showNumberDecEx(EinAusZaehler+1000,0,false,4,0);}
+    }
   }
 }
