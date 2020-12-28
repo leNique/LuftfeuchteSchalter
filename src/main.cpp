@@ -153,8 +153,8 @@ void loop() {
     sensorAussen.Read();
     // absolute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
-    absolutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t)))*100;
-    absolutAussen = (13.233*sensorAussen.h*((pow(10,((7.5*sensorAussen.t)/(237+sensorAussen.t))))/(273.16+sensorInnen.t)))*100;
+    absolutInnen = (13.233*sensorInnen.getHumidity()*((pow(10,((7.5*sensorInnen.getTemperature())/(237+sensorInnen.getTemperature()))))/(273.16+sensorAussen.getTemperature())))*100;
+    absolutAussen = (13.233*sensorAussen.getHumidity()*((pow(10,((7.5*sensorAussen.getTemperature())/(237+sensorAussen.getTemperature()))))/(273.16+sensorInnen.getTemperature())))*100;
 
     if (IstEin==1)
     {BetriebstundenMin++;}
@@ -164,7 +164,7 @@ void loop() {
     {EinAusZaehler=0;}
 
     
-    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
+    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.getHumidity() > 35.0 && sensorInnen.getTemperature() > 12.0)
     { //Einschalten
       digitalWrite(PinRelay, LOW);
       IstEin=1;
@@ -173,7 +173,7 @@ void loop() {
     
     if (IstEin==1)
      {
-      if (absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.h <= 30.0 || sensorInnen.t <= 10.0)
+      if (absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.getHumidity() <= 30.0 || sensorInnen.getTemperature() <= 10.0)
       { //Ausschalten
         digitalWrite(PinRelay, HIGH);
         IstEin=0;
