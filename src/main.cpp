@@ -163,7 +163,7 @@ void loop() {
     if (EinAusZaehler>=999)
     {EinAusZaehler=0;}
 
-    
+    //In Moosbach ist das Relay anders geschaltet HIGH = LOW und andersrum !!!!!
     if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
     { //Einschalten
       digitalWrite(PinRelay, LOW);
