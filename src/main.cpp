@@ -153,8 +153,8 @@ void loop() {
     sensorAussen.Read();
     // absolute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
-    absolutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorAussen.t)))*100;
-    absolutAussen = (13.233*sensorAussen.h*((pow(10,((7.5*sensorAussen.t)/(237+sensorAussen.t))))/(273.16+sensorInnen.t)))*100;
+    absolutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorInnen.t)))*100;
+    absolutAussen = (13.233*sensorAussen.h*((pow(10,((7.5*sensorAussen.t)/(237+sensorAussen.t))))/(273.16+sensorAussen.t)))*100;
 
     if (IstEin==1)
     {BetriebstundenMin++;}
