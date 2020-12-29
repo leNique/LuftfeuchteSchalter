@@ -113,7 +113,7 @@ const uint8_t EinAus[] = {
 void setup() {
   pinMode(PinSchalter, INPUT);
   pinMode(PinRelay, OUTPUT);
-  digitalWrite(PinRelay, HIGH);
+  digitalWrite(PinRelay, LOW);
 
   // Clear the display:
   display.clear();
