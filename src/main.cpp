@@ -17,8 +17,8 @@ AM2320 sensorAussen(9,10); // AM2320 sensor attached SDA to digital PIN 9 and SC
 #define PinRelay 3
 TM1637Display display = TM1637Display(CLK, DIO);
 
-#define EinSchaltSchwelle 70
-#define AusSchaltSchwelle 30
+#define EinSchaltSchwelle 90
+#define AusSchaltSchwelle 40
 
 unsigned long TimerSensor=0;
 unsigned long TimerBlink=0;
@@ -163,10 +163,10 @@ void loop() {
     if (EinAusZaehler>=999)
     {EinAusZaehler=0;}
 
-    //In Moosbach ist das Relay anders geschaltet HIGH = LOW und andersrum !!!!!
+    //In Hausen ist das Relay anders geschaltet HIGH = LOW und andersrum !!!!!
     if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
     { //Einschalten
-      digitalWrite(PinRelay, LOW);
+      digitalWrite(PinRelay, HIGH);
       IstEin=1;
       EinAusZaehler++;
     }
@@ -175,7 +175,7 @@ void loop() {
      {
       if (absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.h <= 30.0 || sensorInnen.t <= 10.0)
       { //Ausschalten
-        digitalWrite(PinRelay, HIGH);
+        digitalWrite(PinRelay, LOW);
         IstEin=0;
         EinAusZaehler++;
       }
