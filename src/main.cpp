@@ -130,7 +130,7 @@ void setup() {
 void loop() {
 
   //Timer nach Überlauf setzen
-  if (millis()<TimerSensor-60000 && TimerSensor > 60000)
+  if (millis()<TimerSensor-60000)
   {TimerSensor=millis();}
   if (millis()<TimerBlink)
   {TimerBlink=millis();}
@@ -164,7 +164,7 @@ void loop() {
     {EinAusZaehler=0;}
 
     //In Hausen ist das Relay anders geschaltet HIGH = LOW und andersrum !!!!!
-    if (absolutInnen-EinSchaltSchwelle>absolutAussen && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
+    if (absolutInnen >= absolutAussen+EinSchaltSchwelle && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
     { //Einschalten
       digitalWrite(PinRelay, HIGH);
       IstEin=1;
@@ -173,7 +173,7 @@ void loop() {
     
     if (IstEin==1)
      {
-      if (absolutInnen-AusSchaltSchwelle<absolutAussen || sensorInnen.h <= 30.0 || sensorInnen.t <= 10.0)
+      if (absolutInnen <= absolutAussen+AusSchaltSchwelle || sensorInnen.h <= 30.0 || sensorInnen.t <= 10.0)
       { //Ausschalten
         digitalWrite(PinRelay, LOW);
         IstEin=0;
