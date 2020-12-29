@@ -130,7 +130,7 @@ void setup() {
 void loop() {
 
   //Timer nach Überlauf setzen
-  if (millis()<TimerSensor-60000)
+  if (millis()<TimerSensor-60000 && TimerSensor > 60000)
   {TimerSensor=millis();}
   if (millis()<TimerBlink)
   {TimerBlink=millis();}
