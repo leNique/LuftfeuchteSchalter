@@ -17,8 +17,8 @@ AM2320 sensorAussen(9,10); // AM2320 sensor attached SDA to digital PIN 9 and SC
 #define PinRelay 3
 TM1637Display display = TM1637Display(CLK, DIO);
 
-int const EinSchaltSchwelle = 65;
-int const AusSchaltSchwelle = 30;
+int const EinSchaltSchwelle = 100;
+int const AusSchaltSchwelle = 50;
 
 unsigned long TimerSensor=0;
 unsigned long TimerBlink=0;
