@@ -164,7 +164,7 @@ void loop() {
     {EinAusZaehler=0;}
 
     //In Hausen ist das Relay anders geschaltet HIGH = LOW und andersrum !!!!!
-    if (absolutInnen >= absolutAussen+EinSchaltSchwelle && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
+    if (absolutInnen >= absolutAussen+EinSchaltSchwelle && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 17.0)
     { //Einschalten
       digitalWrite(PinRelay, HIGH);
       IstEin=1;
@@ -173,7 +173,7 @@ void loop() {
 
     if (IstEin==1)
      {
-      if (absolutInnen <= absolutAussen+AusSchaltSchwelle || sensorInnen.h <= 30.0 || sensorInnen.t <= 10.0)
+      if (absolutInnen <= absolutAussen+AusSchaltSchwelle || sensorInnen.h <= 30.0 || sensorInnen.t <= 15.5)
       { //Ausschalten
         digitalWrite(PinRelay, LOW);
         IstEin=0;
