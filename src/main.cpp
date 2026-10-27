@@ -195,9 +195,9 @@ float rawTemperatureInnen = sensorInnen.t;
 float rawHumidityAussen = sensorAussen.h;
 float rawTemperatureAussen = sensorAussen.t;
 // Kalibrierte Werte berechnen
-float calibratedHumidityInnen = rawHumidityInnen - 0; // Dein berechneter Offset
+float calibratedHumidityInnen = rawHumidityInnen * 0.95; // Dein berechneter Offset
 float calibratedTemperatureInnen = rawTemperatureInnen - 0;
-float calibratedHumidityAussen = rawHumidityAussen - 0; // Dein berechneter Offset
+float calibratedHumidityAussen = rawHumidityAussen * 0.90; // Dein berechneter Offset
 float calibratedTemperatureAussen = rawTemperatureAussen - 0;
 
 // Falls der Wert durch die Korrektur unter 0 oder über 100 rutscht, abfangen:
