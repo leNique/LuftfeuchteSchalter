@@ -26,6 +26,17 @@ unsigned long TimerBlink=0;
 unsigned long TimerDisplayReset=0;
 unsigned long TimerIntervalllueften=0;
 
+float rawHumidityInnen = 0;
+float rawTemperatureInnen = 0;
+float rawHumidityAussen = 0;
+float rawTemperatureAussen = 0;
+float calibratedHumidityInnen =0; 
+float calibratedTemperatureInnen = 0;
+float calibratedHumidityAussen =0; 
+float calibratedTemperatureAussen = 0;
+
+
+
 int IntervallMerker=0;
 int BetriebstundenMin=0;
 int EinAusZaehler=0;
@@ -136,7 +147,7 @@ void setup() {
 void loop() {
 
   //Timer nach Überlauf setzen
-  if (millis()<TimerSensor-60000)
+  if (millis()<TimerSensor-6000)
   {TimerSensor=millis();}
   if (millis()<TimerBlink)
   {TimerBlink=millis();}
@@ -179,6 +190,21 @@ void loop() {
     //SensorenLesen
     sensorInnen.Read();
     sensorAussen.Read();
+float rawHumidityInnen = sensorInnen.h;
+float rawTemperatureInnen = sensorInnen.t;
+float rawHumidityAussen = sensorAussen.h;
+float rawTemperatureAussen = sensorAussen.t;
+// Kalibrierte Werte berechnen
+float calibratedHumidityInnen = rawHumidityInnen - 0; // Dein berechneter Offset
+float calibratedTemperatureInnen = rawTemperatureInnen - 0;
+float calibratedHumidityAussen = rawHumidityAussen - 0; // Dein berechneter Offset
+float calibratedTemperatureAussen = rawTemperatureAussen - 0;
+
+// Falls der Wert durch die Korrektur unter 0 oder über 100 rutscht, abfangen:
+if (calibratedHumidityInnen > 100.0) calibratedHumidityInnen = 100.0;
+if (calibratedHumidityInnen < 0.0) calibratedHumidityInnen = 0.0;
+if (calibratedHumidityAussen > 100.0) calibratedHumidityAussen = 100.0;
+if (calibratedHumidityAussen < 0.0) calibratedHumidityAussen = 0.0;
 
 /*
 //Test
@@ -190,19 +216,19 @@ digitalWrite(PinRelay, HIGH);
 }
 */
     Serial.print("Innen Hu: ");
-    Serial.println(sensorInnen.h);
+    Serial.println(calibratedHumidityInnen);
     Serial.print("Innen Temp: ");
-    Serial.println(sensorInnen.t);
+    Serial.println(calibratedTemperatureInnen);
     Serial.print("Aussen Hu: ");
-    Serial.println(sensorAussen.h);
+    Serial.println(calibratedHumidityAussen);
     Serial.print("Aussen Temp: ");
-    Serial.println(sensorAussen.t);
+    Serial.println(calibratedTemperatureAussen);
     Serial.println("--------------------------");
 
     // absolute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
-    absolutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorInnen.t)))*100;
-    absolutAussen = (13.233*sensorAussen.h*((pow(10,((7.5*sensorAussen.t)/(237+sensorAussen.t))))/(273.16+sensorAussen.t)))*100;
+    absolutInnen = (13.233*calibratedHumidityInnen*((pow(10,((7.5*calibratedTemperatureInnen)/(237+calibratedTemperatureInnen))))/(273.16+calibratedTemperatureInnen)))*100;
+    absolutAussen = (13.233*calibratedHumidityAussen*((pow(10,((7.5*calibratedTemperatureAussen)/(237+calibratedTemperatureAussen))))/(273.16+calibratedTemperatureAussen)))*100;
 
     if (IstEin==1)
     {BetriebstundenMin++;}
@@ -231,7 +257,8 @@ digitalWrite(PinRelay, HIGH);
      /*   //Klammer Intervalllüften
      }
      */
-    TimerSensor=millis()+60000;
+    //TimerSensor=millis()+60000;
+    TimerSensor=millis()+6000;
   }
 
 /*
