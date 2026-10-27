@@ -1,9 +1,10 @@
 #include <Arduino.h>
-#include <TM1637Display.h>
+//#include <TM1637Display.h>
 
 #include <SoftwareWire.h>
 #include "AM2320.h"
 
+//#include <avr\power.h>
 
 
 //Temp_LuftfSenor - AM2320
@@ -15,7 +16,7 @@ AM2320 sensorAussen(9,10); // AM2320 sensor attached SDA to digital PIN 9 and SC
 #define DIO 12
 #define PinSchalter 5
 #define PinRelay 3
-TM1637Display display = TM1637Display(CLK, DIO);
+//TM1637Display display = TM1637Display(CLK, DIO);
 
 int const EinSchaltSchwelle = 65;
 int const AusSchaltSchwelle = 30;
@@ -23,7 +24,9 @@ int const AusSchaltSchwelle = 30;
 unsigned long TimerSensor=0;
 unsigned long TimerBlink=0;
 unsigned long TimerDisplayReset=0;
+unsigned long TimerIntervalllueften=0;
 
+int IntervallMerker=0;
 int BetriebstundenMin=0;
 int EinAusZaehler=0;
 
@@ -36,7 +39,7 @@ bool IstEin=0;
 int absolutInnen=0;
 int absolutAussen=0;
 
-
+/*
 void DisplayTemp(byte);
 void DisplayHumidityR(byte);
 void DisplayHumidityA(byte);
@@ -107,20 +110,23 @@ const uint8_t EinAus[] = {
   SEG_C | SEG_E | SEG_G,                         // n
   SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G  // A
 };
-
+*/
 
 
 void setup() {
   pinMode(PinSchalter, INPUT);
   pinMode(PinRelay, OUTPUT);
-  digitalWrite(PinRelay, LOW);
+  digitalWrite(PinRelay, HIGH);
 
-  // Clear the display:
+//clock_prescale_set(clock_div_8);
+
+  /*// Clear the display:
   display.clear();
   delay(500);
   display.setBrightness(7);
   display.setSegments(data);
   delay(1000);
+  */
 
   sensorInnen.Read();
   sensorAussen.Read();
@@ -148,9 +154,51 @@ void loop() {
   // 1. Mal pro Minute ausführen
   if (TimerSensor<millis())
   {
+     /*
+     //TimerIntervalllueften
+     if (TimerIntervalllueften+3600000 < millis())
+     {
+
+       IntervallMerker++;
+       if (IntervallMerker>23)
+          {
+            IntervallMerker=0;
+          }
+       TimerIntervalllueften=millis();
+     }
+     if (IntervallMerker==1 || IntervallMerker==12)
+     {
+      //Einschalten zur 2. und 12. Stunde
+      digitalWrite(PinRelay, LOW);
+      IstEin=1;
+     }
+     else
+     {
+     */
+
     //SensorenLesen
     sensorInnen.Read();
     sensorAussen.Read();
+
+/*
+//Test
+if (sensorAussen.h > 35.0 && sensorAussen.h < 80.0 && sensorAussen.t > 10.0 && sensorAussen.t < 30.0)
+{
+digitalWrite(PinRelay, LOW);
+delay(2000);
+digitalWrite(PinRelay, HIGH);
+}
+*/
+    Serial.print("Innen Hu: ");
+    Serial.println(sensorInnen.h);
+    Serial.print("Innen Temp: ");
+    Serial.println(sensorInnen.t);
+    Serial.print("Aussen Hu: ");
+    Serial.println(sensorAussen.h);
+    Serial.print("Aussen Temp: ");
+    Serial.println(sensorAussen.t);
+    Serial.println("--------------------------");
+
     // absolute Feuchten berechnen und Relais Schalten
     // die letzten 2 Stellen sind Nachkommastellen
     absolutInnen = (13.233*sensorInnen.h*((pow(10,((7.5*sensorInnen.t)/(237+sensorInnen.t))))/(273.16+sensorInnen.t)))*100;
@@ -164,26 +212,29 @@ void loop() {
     {EinAusZaehler=0;}
 
     //In Hausen ist das Relay anders geschaltet HIGH = LOW und andersrum !!!!!
-    if (absolutInnen >= absolutAussen+EinSchaltSchwelle && IstEin==0 && sensorInnen.h > 35.0 && sensorInnen.t > 12.0)
+    if (absolutInnen >= absolutAussen+EinSchaltSchwelle && IstEin==0 && sensorInnen.h > 45.0 && sensorInnen.t > 12.0)
     { //Einschalten
-      digitalWrite(PinRelay, HIGH);
+      digitalWrite(PinRelay, LOW);
       IstEin=1;
       EinAusZaehler++;
     }
 
     if (IstEin==1)
      {
-      if (absolutInnen <= absolutAussen+AusSchaltSchwelle || sensorInnen.h <= 30.0 || sensorInnen.t <= 10.0)
+      if (absolutInnen <= absolutAussen+AusSchaltSchwelle || sensorInnen.h <= 40.0 || sensorInnen.t <= 10.0)
       { //Ausschalten
-        digitalWrite(PinRelay, LOW);
+        digitalWrite(PinRelay, HIGH);
         IstEin=0;
         EinAusZaehler++;
       }
      }
+     /*   //Klammer Intervalllüften
+     }
+     */
     TimerSensor=millis()+60000;
   }
 
-
+/*
   // Taster lesen und DisplayStatus anpassen
   if (digitalRead(5) && TasterMerker==0)
   {
@@ -239,7 +290,7 @@ void loop() {
     DisplayBetrieb(2);
     break;
   }
-
+*/
 
 
 }
@@ -250,7 +301,7 @@ void loop() {
 
 
 
-
+/*
 
 void DisplayTemp(byte Auswahl)
 {
@@ -366,3 +417,4 @@ void DisplayBetrieb(byte Auswahl)
     }
   }
 }
+*/
